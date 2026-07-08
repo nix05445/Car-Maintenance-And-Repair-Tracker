@@ -17,15 +17,17 @@ To use the web application:
      -Note: You could also skip those steps and clone the repository using its web URL under the green Code button above and entering it into Visual Studio Code.
   3. Open Visual Studio Code and install recommended extensions by going to the Extensions page and then typing '@recommended' in the search bar to view the workspace recommended extensions.
   4. Install Project Dependencies by typing the following in your terminal:
-    ```bash
-    pip install -r requirements.txt
-    ```
-    OR
-    ```
-    pip3 install -r requiremnets.txt
-    ```
-  5. Run the Flask application by typing the following in your terminal:
-    ```bash
-    flask run
-    ```
-  6. You will recieve an IP address. Enter that address into your browser to view and interact with the web application.
+     ```bash
+     pip install -r requiremnets.txt
+     ```
+     
+     OR
+     
+     ```bash
+     pip install -r requiremnets.txt
+     ```
+  6. Run the Flask application by typing the following in your terminal:
+     ```bash
+     flask run
+     ```
+  7. You will recieve an IP address. Enter that address into your browser to view and interact with the web application.
