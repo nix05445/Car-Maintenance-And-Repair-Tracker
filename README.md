@@ -1,9 +1,9 @@
-#Car Maintenance and Repair Tracker
+# Car-Maintenance-And-Repair-Tracker
 
-##Idea
+## Purpose:
 The purpose of this project is to have a dedicated web application designed to help users keep track of their vehicle's maintenance and repair history. It allows users to record services performed, whether it be a maintenance or a repair job, while organizing records by mileage to help view service entries more easily.
 
-##Setup
+## Setup Instuctions:
 To use the web application:
   1. Clone the repository
     -Open a terminal or command prompt, navigate to your preferred directory, and clone the repository by typing the following in your terminal:
