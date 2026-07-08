@@ -24,7 +24,7 @@ To use the web application:
      OR
      
      ```bash
-     pip install -r requiremnets.txt
+     pip3 install -r requiremnets.txt
      ```
   6. Run the Flask application by typing the following in your terminal:
      ```bash
