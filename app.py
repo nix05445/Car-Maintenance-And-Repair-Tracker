@@ -37,3 +37,36 @@ def add():
     db.session.commit()
 
     return redirect("/")
+
+@app.route("/edit/<int:id>", methods=["GET", "POST"]) 
+def edit(id):  
+    entry = ServiceEntry.query.get_or_404(id) 
+
+    if request.method == "POST": 
+        entry.date = request.form["date"] 
+        entry.mileage = request.form["mileage"] 
+        entry.category = request.form["category"] 
+        entry.work_done = request.form["work_done"] 
+        entry.cost = request.form["cost"] or 0 
+
+        db.session.commit() 
+        return redirect("/") 
+
+    entries = ServiceEntry.query.order_by(ServiceEntry.mileage.desc()).all() 
+
+    return render_template("index.html", 
+        entries=entries, 
+        editing_entry=entry
+    ) 
+
+@app.route("/delete/<int:id>")
+def delete(id):
+    entry = ServiceEntry.query.get_or_404(id)
+    
+    db.session.delete(entry)
+    db.session.commit()
+    
+    return redirect("/")
+
+if __name__ == "__main__":
+    app.run(debug=True)    

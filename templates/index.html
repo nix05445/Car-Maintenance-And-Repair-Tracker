@@ -13,29 +13,38 @@
 <div class="container">
     <div class="add-service">
         <h2>Add Service Record</h2>
-        <form action="/add" method="POST">
+        <form action="{% if editing_entry %}{{ url_for('edit', id=editing_entry.id) }}{% else %}{{ url_for('add') }}{% endif %}" method="POST">
         <div class="row">
         <div>
         <label>Date</label>
             <input 
                 type="date" 
-                name="date">
+                name="date"
+                value="{{ editing_entry.date if editing_entry else '' }}">
         </div>
         <nbsp></nbsp>
         <div>
         <label>Mileage</label>
         <input
             type="number"
-            name="mileage">
+            name="mileage"
+            value="{{ editing_entry.mileage if editing_entry else '' }}">
         </div>
         <nbsp></nbsp>
         <div>
         <label>Category</label>
             <select name="category">
-            <option value="Maintenance">
+            <option 
+                value="Maintenance"
+                    {% if editing_entry and editing_entry.category=="Maintenance" %}
+                        selected
+                    {% endif %}>
                 Maintenance
             </option>
-            <option value="Repair">
+            <option value="Repair"
+                    {% if editing_entry and editing_entry.category=="Repair" %}
+                        selected
+                    {% endif %}>
                 Repair
             </option>
             </select>
@@ -46,7 +55,8 @@
             <input
                 type="number"
                 step="0.01"
-                name="cost">
+                name="cost"
+                value="{{ editing_entry.cost if editing_entry else '' }}">
         </div>
         </div>
 
@@ -54,12 +64,22 @@
         <label>Work Performed</label>
             <input
                 type="text"
-                name="work_done">
+                name="work_done"
+                value="{{ editing_entry.work_done if editing_entry else '' }}">
         </div>
         
         <button type="submit">
+            {% if editing_entry %}
+                Update Entry
+            {% else %}
                 Save Entry
+            {% endif %}
         </button>
+        {% if editing_entry %}
+            <a href="/">
+                <button type="button">Cancel</button>
+            </a>
+        {% endif %}
         </form>
     </div>
 </div>
@@ -85,6 +105,15 @@
                 <td>{{ entry.category }}</td>
                 <td>{{ entry.work_done }}</td>
                 <td>${{ "%.2f"|format(entry.cost) }}</td>
+                <td>
+                    <a href="/edit/{{ entry.id }}">
+                        <button>Edit</button>
+                    </a>
+                    <a href="/delete/{{ entry.id }}" 
+                        onclick="return confirm('Delete this service record? This action cannot be undone')">
+                        <button>Delete</button>
+                    </a>
+                </td>
                 </tr>
                 <!--{% endfor %}-->
             </tbody>
