@@ -84,9 +84,53 @@
     </div>
 </div>
 
-<div class="container">
+<div class = "container"> 
+    <div class="dashboard"> 
+        <div class="card"> 
+            <h3>Total Entries</h3> 
+            <h2>{{ total_entries }}</h2> 
+        </div> 
+        <div class="card"> 
+            <h3>Maintenance</h3> 
+            <h2>{{ maintenance_count }}</h2> 
+        </div> 
+        <div class="card"> 
+            <h3>Repairs</h3> 
+            <h2>{{ repair_count }}</h2> 
+        </div> 
+        <div class="card"> 
+            <h3>Total Spent</h3> 
+            <h2>${{ "%.2f"|format(total_spent) }}</h2> 
+        </div> 
+    </div> 
+
     <div class="history">
         <h2>Service History</h2>
+        <div class="toolbar">
+            <div class="filters">
+                <a href="/">
+                    <button type="button">All</button>
+                </a> 
+                <a href="/?category=Maintenance">
+                    <button type="button">Maintenance</button>
+                </a>
+                <a href="/?category=Repair">
+                    <button type="button">Repairs</button>
+                </a>
+            </div>
+            <br>
+            <form id="filterForm" method="GET">
+                <input 
+                    type="text" 
+                    name="search" 
+                    value="{{ current_search }}" 
+                    placeholder="Filter by work performed..."> 
+                <button type="submit"> 
+                    Filter 
+                </button> 
+            </form> 
+        </div> 
+        <br> 
         <table>
             <thead>
                 <tr>
@@ -98,7 +142,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!--{% for entry in entries %} -->
+                {% for entry in entries %}
                 <tr>
                 <td>{{ entry.date }}</td>
                 <td>{{ entry.mileage }}</td>
@@ -115,7 +159,7 @@
                     </a>
                 </td>
                 </tr>
-                <!--{% endfor %}-->
+                {% endfor %}
             </tbody>
         </table>
     </div>

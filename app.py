@@ -14,17 +14,48 @@ with app.app_context():
 
 @app.route("/")
 def home():
+    category = request.args.get("category")
+    search = request.args.get("search")
+    
+    query = ServiceEntry.query
+    
+    if category and category != "All":
+        query = query.filter_by(category=category)
+        
+    if search:
+        query = query.filter(
+            ServiceEntry.work_done.ilike(f"%{search}%")
+        )
 
-    entries = ServiceEntry.query.order_by(ServiceEntry.mileage.desc()).all()
+    entries = query.order_by(ServiceEntry.mileage.desc()).all()
+    total_entries = ServiceEntry.query.count()
+    
+    maintenance_count = ServiceEntry.query.filter_by(
+        category="Maintenance"
+    ).count()
+    
+    repair_count = ServiceEntry.query.filter_by(
+        category="Repair"
+    ).count()
+    
+    total_spent = db.session.query(
+        db.func.sum(ServiceEntry.cost)
+    ).scalar() or 0
 
     return render_template(
         "index.html",
         entries=entries,
-)
+        current_category=category or "All",
+        current_search=search or "",
+        editing_entry=None,
+        total_entries=total_entries,
+        maintenance_count=maintenance_count,
+        repair_count=repair_count,
+        total_spent=total_spent
+    )
 
 @app.route("/add", methods=["POST"])
 def add():
-
     entry = ServiceEntry(
         date=request.form["date"],
         mileage=request.form["mileage"],
@@ -53,10 +84,29 @@ def edit(id):
         return redirect("/") 
 
     entries = ServiceEntry.query.order_by(ServiceEntry.mileage.desc()).all() 
+    total_entries = ServiceEntry.query.count()
+    
+    maintenance_count = ServiceEntry.query.filter_by(
+        category="Maintenance"
+    ).count()
+    
+    repair_count = ServiceEntry.query.filter_by(
+        category="Repair"
+    ).count()
+    
+    total_spent = db.session.query(
+        db.func.sum(ServiceEntry.cost)
+    ).scalar() or 0
 
     return render_template("index.html", 
         entries=entries, 
-        editing_entry=entry
+        editing_entry=entry,
+        total_entries=total_entries, 
+        maintenance_count=maintenance_count, 
+        repair_count=repair_count, 
+        total_spent=total_spent, 
+        current_category="All", 
+        current_search="" 
     ) 
 
 @app.route("/delete/<int:id>")
